@@ -46,6 +46,10 @@ export TAR_EXT=${TAR_EXT:-".xz"}
 
 export HOMEDIR=/home/${DOCKER_BUILD_USER}
 
+if [ "${OLD_RELEASE_REPO}" -eq 1 ]; then
+sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+fi
+
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y install apt-utils vim

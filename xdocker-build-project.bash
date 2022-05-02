@@ -41,7 +41,6 @@ PROJECT_SRC_DOCKER_DIR=$3
 shift 3
 
 chown "${DOCKER_UID}"."${DOCKER_GID}" /home/${DOCKER_BUILD_USER}
-# chown ${DOCKER_UID}.${DOCKER_GID} /home/${DOCKER_BUILD_USER}/.bashrc
 
 addgroup --quiet --gid "${DOCKER_GID}" ${DOCKER_BUILD_USER}
 adduser --quiet --home /home/${DOCKER_BUILD_USER} --uid "${DOCKER_UID}" \
@@ -49,8 +48,6 @@ adduser --quiet --home /home/${DOCKER_BUILD_USER} --uid "${DOCKER_UID}" \
   --shell /bin/bash --disabled-password --gecos 'compile user' ${DOCKER_BUILD_USER}
 
 adduser --quiet ${DOCKER_BUILD_USER} sudo &>/dev/null
-
-# ex +"%s/^%sudo.*\$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/g" -scwq! /etc/sudoers
 
 CMD=$*
 
@@ -65,6 +62,5 @@ export BEERSYM='🍺 '
 
 cd "${PROJECT_SRC_DOCKER_DIR}"
 echo "Exec on $(lsb_release -s -d)"
-
 ${CMD}
 EOF
