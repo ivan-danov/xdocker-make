@@ -254,9 +254,23 @@ focal:
 jammy:
 	./xdocker-create examples/jammy-dev.conf
 
-# push_focal:
-# 	docker push xdockermake/focal-devel:${{ steps.date.outputs.date }}
-# 	docker push xdockermake/focal-devel:latest
-#
-# 	docker tag xdockermake/focal-devel:tagname new-repo:tagname
-# 	docker push new-repo:tagname
+push_precise:
+	docker push xdockermake/precise-devel:$(shell docker inspect xdockermake/precise-devel:latest |grep '"xdockermake/precise-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/precise-devel:latest
+
+push_xenial:
+	docker push xdockermake/xenial-devel:$(shell docker inspect xdockermake/xenial-devel:latest |grep '"xdockermake/xenial-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/xenial-devel:latest
+
+push_bionic:
+	docker push xdockermake/bionic-devel:$(shell docker inspect xdockermake/bionic-devel:latest |grep '"xdockermake/bionic-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/bionic-devel:latest
+
+push_focal:
+	docker push xdockermake/focal-devel:$(shell docker inspect xdockermake/focal-devel:latest |grep '"xdockermake/focal-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/focal-devel:latest
+
+push_jammy:
+	docker push xdockermake/jammy-devel:$(shell docker inspect xdockermake/jammy-devel:latest |grep '"xdockermake/jammy-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/jammy-devel:latest
+
