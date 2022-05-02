@@ -274,3 +274,7 @@ push_jammy:
 	docker push xdockermake/jammy-devel:$(shell docker inspect xdockermake/jammy-devel:latest |grep '"xdockermake/jammy-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
 	docker push xdockermake/jammy-devel:latest
 
+
+push_all: push_precise push_xenial push_bionic push_focal push_jammy
+
+.PHONY: push_all push_precise push_xenial push_bionic push_focal push_jammy
