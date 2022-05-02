@@ -49,18 +49,16 @@ function die() {
 
 
 argc=$#
-if [ ${argc} -lt 2 ]; then
+if [ ${argc} -lt 3 ]; then
 	echo "Usage:"
-	echo "	${0} <docker image> cmd [args]"
+	echo "	${0} <docker image> <source directory> cmd [args]"
 	exit 1
 fi
 
 DOCKER_IMAGE=${1}
-shift
+MAIN_SRC_DIR=${2}
+shift 2
 
-# MAIN_SRC_DIR=.
-
-MAIN_SRC_DIR=/home/danov/src
 MAIN_SRC_DIR_ABS=$(realpath ${MAIN_SRC_DIR})
 
 # in container
@@ -69,6 +67,6 @@ DOCKER_SRC_DIR=/home/${DOCKER_BUILD_USER}/src
 PROJECT_SRC_DOCKER_DIR=/home/${DOCKER_BUILD_USER}/src/petrol-tv/server
 
 docker run --hostname="xdockermake" -it --rm --init \
- --mount type=bind,source="${MAIN_SRC_DIR_ABS}",destination="${DOCKER_SRC_DIR}" \
- --entrypoint="" "${DOCKER_IMAGE}" \
- /xdocker-build-project.bash "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
+  --mount type=bind,source="${MAIN_SRC_DIR_ABS}",destination="${DOCKER_SRC_DIR}" \
+  --entrypoint="" "${DOCKER_IMAGE}" \
+  /xdocker-build-project.bash "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"

@@ -89,7 +89,7 @@ function cleanup() {
 
 trap cleanup SIGINT SIGTERM ERR EXIT
 
-# SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 if ifNotSet OUTPUT_DIR ; then
 OUTPUT_DIR=.
 fi
@@ -104,12 +104,15 @@ else
 fi
 
 if [ "${XDOCKER_MAKE_VERSION}" == "development" ]; then
-	XDOCKER_IMAGE_CREATE=./xdocker-image-create.bash
-	XDOCKER_BUILD_PROJECT=./xdocker-build-project.bash
+	XDOCKER_IMAGE_CREATE="${SCRIPT_DIR}/xdocker-image-create.bash"
+	XDOCKER_BUILD_PROJECT="${SCRIPT_DIR}/xdocker-build-project.bash"
 else
 	XDOCKER_IMAGE_CREATE=/usr/lib/xdocker-make/xdocker-image-create.bash
 	XDOCKER_BUILD_PROJECT=/usr/lib/xdocker-make/xdocker-build-project.bash
 fi
+
+cp ${XDOCKER_IMAGE_CREATE} "$tmpdir/xdocker-image-create.bash"
+cp ${XDOCKER_BUILD_PROJECT} "$tmpdir/xdocker-build-project.bash"
 
 cat > "$tmpdir/Dockerfile" << EOF
 FROM ${OS_NAME}:${OS_DISTRO}
@@ -130,8 +133,8 @@ LABEL CONTAINER_NAME=${CONTAINER_NAME}
 LABEL CONTAINER_VERSION=${CONTAINER_VERSION}
 
 # copy setup script
-COPY ${XDOCKER_IMAGE_CREATE} /
-COPY ${XDOCKER_BUILD_PROJECT} /
+COPY ./xdocker-image-create.bash /
+COPY ./xdocker-build-project.bash /
 
 # run setup script
 RUN bash /xdocker-image-create.bash
@@ -140,8 +143,10 @@ ENTRYPOINT ["/bin/bash"]
 
 EOF
 
-docker build . --file "$tmpdir/Dockerfile" \
+cd "$tmpdir"
+docker build . --file "Dockerfile" \
 	--tag "${CONTAINER_NAME}:${CONTAINER_TAG}" \
 	--tag "${CONTAINER_NAME}:latest"
+cd -
 
 die "✅ Completed." 0
