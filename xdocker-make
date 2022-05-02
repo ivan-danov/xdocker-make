@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#*******************************************************************************
+#*                                 xdocker-make                                *
+#*-----------------------------------------------------------------------------*
+#*                                                                             *
+#* Copyright (c) 2022 Ivan Danov                                               *
+#*                                                                             *
+#* MIT License                                                                 *
+#*                                                                             *
+#* Permission is hereby granted, free of charge, to any person obtaining a     *
+#* copy of this software and associated documentation files (the "Software"),  *
+#* to deal in the Software without restriction, including without limitation   *
+#* the rights to use, copy, modify, merge, publish, distribute, sublicense,    *
+#* and/or sell copies of the Software, and to permit persons to whom the       *
+#* Software is furnished to do so, subject to the following conditions:        *
+#*                                                                             *
+#* The above copyright notice and this permission notice shall be included     *
+#* in all copies or substantial portions of the Software.                      *
+#*                                                                             *
+#* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS     *
+#* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, *
+#* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE *
+#* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER      *
+#* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING     *
+#* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER         *
+#* DEALINGS IN THE SOFTWARE.                                                   *
+#*******************************************************************************
+
+set -Eeuo pipefail
+
+# shellcheck disable=SC2034
+XDOCKER_MAKE_BASE_VERSION="1.0"
+# shellcheck disable=SC2034
+XDOCKER_MAKE_VERSION=development
+
+function log() {
+        echo >&2 -e "[$(date +"%Y-%m-%d %H:%M:%S")] ${1-}"
+}
+function die() {
+        local msg=$1
+        local code=${2-1} # Bash parameter expansion - default exit status 1. See https://wiki.bash-hackers.org/syntax/pe#use_a_default_value
+        log "$msg"
+	if [ "$code" -ne 0 ]; then
+		log "💥 Error!"
+	fi
+        exit "$code"
+}
+
+
+argc=$#
+if [ ${argc} -lt 2 ]; then
+	echo "Usage:"
+	echo "	${0} <docker image> cmd [args]"
+	exit 1
+fi
+
+DOCKER_IMAGE=${1}
+shift
+
+# MAIN_SRC_DIR=.
+
+MAIN_SRC_DIR=/home/danov/src
+MAIN_SRC_DIR_ABS=$(realpath ${MAIN_SRC_DIR})
+
+# in container
+DOCKER_BUILD_USER=xdocker
+DOCKER_SRC_DIR=/home/${DOCKER_BUILD_USER}/src
+PROJECT_SRC_DOCKER_DIR=/home/${DOCKER_BUILD_USER}/src/petrol-tv/server
+
+docker run --hostname="xdockermake" -it --rm --init \
+ --mount type=bind,source="${MAIN_SRC_DIR_ABS}",destination="${DOCKER_SRC_DIR}" \
+ --entrypoint="" "${DOCKER_IMAGE}" \
+ /xdocker-build-project.bash "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
