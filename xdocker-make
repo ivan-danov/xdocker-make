@@ -59,7 +59,7 @@ DOCKER_IMAGE=${1}
 MAIN_SRC_DIR=${2}
 shift 2
 
-MAIN_SRC_DIR_ABS=$(realpath ${MAIN_SRC_DIR})
+MAIN_SRC_DIR_ABS=$(realpath "${MAIN_SRC_DIR}")
 
 # in container
 DOCKER_BUILD_USER=xdocker
