@@ -62,11 +62,11 @@ shift 2
 MAIN_SRC_DIR_ABS=$(realpath "${MAIN_SRC_DIR}")
 
 # in container
-DOCKER_BUILD_USER=xdocker
+DOCKER_BUILD_USER=$(id -u -n)
 DOCKER_SRC_DIR=/home/${DOCKER_BUILD_USER}/src
-PROJECT_SRC_DOCKER_DIR=/home/${DOCKER_BUILD_USER}/src/petrol-tv/server
+PROJECT_SRC_DOCKER_DIR=${DOCKER_SRC_DIR}/$(realpath --relative-to=${MAIN_SRC_DIR_ABS} .)
 
 docker run --hostname="xdockermake" -it --rm --init \
   --mount type=bind,source="${MAIN_SRC_DIR_ABS}",destination="${DOCKER_SRC_DIR}" \
   --entrypoint="" "${DOCKER_IMAGE}" \
-  /xdocker-build-project.bash "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
+  /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
