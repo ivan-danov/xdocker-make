@@ -51,22 +51,22 @@ function die() {
 argc=$#
 if [ ${argc} -lt 3 ]; then
 	echo "Usage:"
-	echo "	${0} <docker image> <source directory> cmd [args]"
+	echo "	${0} <docker image> cmd [args]"
 	exit 1
 fi
 
 DOCKER_IMAGE=${1}
-MAIN_SRC_DIR=${2}
-shift 2
+shift 1
 
-MAIN_SRC_DIR_ABS=$(realpath "${MAIN_SRC_DIR}")
-
-# in container
+# mount user home dir in container
 DOCKER_BUILD_USER=$(id -u -n)
-DOCKER_SRC_DIR=/home/${DOCKER_BUILD_USER}/src
-PROJECT_SRC_DOCKER_DIR=${DOCKER_SRC_DIR}/$(realpath --relative-to=${MAIN_SRC_DIR_ABS} .)
+DOCKER_USER_HOMEDIR=/home/${DOCKER_BUILD_USER}
+PROJECT_SRC_DOCKER_DIR=${DOCKER_USER_HOMEDIR}/$(realpath --relative-to=${DOCKER_USER_HOMEDIR} .)
+
+SCRIPT_DEBUG=
+# SCRIPT_DEBUG="/bin/bash -x
 
 docker run --hostname="xdockermake" -it --rm --init \
-  --mount type=bind,source="${MAIN_SRC_DIR_ABS}",destination="${DOCKER_SRC_DIR}" \
+  --mount type=bind,source="${DOCKER_USER_HOMEDIR}",destination="${DOCKER_USER_HOMEDIR}" \
   --entrypoint="" "${DOCKER_IMAGE}" \
-  /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
+  ${SCRIPT_DEBUG} /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"

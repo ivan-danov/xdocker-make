@@ -61,6 +61,6 @@ export ENABLE_DEPENDANCY=yes
 export BEERSYM='🍺 '
 
 cd "${PROJECT_SRC_DOCKER_DIR}"
-echo "Exec on $(lsb_release -s -d)"
+echo "Exec on $(lsb_release -s -d) in ${PROJECT_SRC_DOCKER_DIR}"
 ${CMD}
 EOF
