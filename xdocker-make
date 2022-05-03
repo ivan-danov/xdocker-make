@@ -61,12 +61,9 @@ shift 1
 # mount user home dir in container
 DOCKER_BUILD_USER=$(id -u -n)
 DOCKER_USER_HOMEDIR=/home/${DOCKER_BUILD_USER}
-PROJECT_SRC_DOCKER_DIR=${DOCKER_USER_HOMEDIR}/$(realpath --relative-to=${DOCKER_USER_HOMEDIR} .)
-
-SCRIPT_DEBUG=
-# SCRIPT_DEBUG="/bin/bash -x
+PROJECT_SRC_DOCKER_DIR=${DOCKER_USER_HOMEDIR}/$(realpath --relative-to="${DOCKER_USER_HOMEDIR}" .)
 
 docker run --hostname="xdockermake" -it --rm --init \
   --mount type=bind,source="${DOCKER_USER_HOMEDIR}",destination="${DOCKER_USER_HOMEDIR}" \
   --entrypoint="" "${DOCKER_IMAGE}" \
-  ${SCRIPT_DEBUG} /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
+  /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"

@@ -40,18 +40,18 @@ DOCKER_GID=$3
 PROJECT_SRC_DOCKER_DIR=$4
 shift 4
 
-chown "${DOCKER_UID}"."${DOCKER_GID}" /home/${DOCKER_BUILD_USER}
+chown "${DOCKER_UID}"."${DOCKER_GID}" "/home/${DOCKER_BUILD_USER}"
 
-addgroup --quiet --gid "${DOCKER_GID}" ${DOCKER_BUILD_USER}
-adduser --quiet --home /home/${DOCKER_BUILD_USER} --uid "${DOCKER_UID}" \
-  --ingroup ${DOCKER_BUILD_USER} \
-  --shell /bin/bash --disabled-password --gecos 'compile user' ${DOCKER_BUILD_USER}
+addgroup --quiet --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}"
+adduser --quiet --home "/home/${DOCKER_BUILD_USER}" --uid "${DOCKER_UID}" \
+  --ingroup "${DOCKER_BUILD_USER}" \
+  --shell /bin/bash --disabled-password --gecos 'compile user' "${DOCKER_BUILD_USER}"
 
-adduser --quiet ${DOCKER_BUILD_USER} sudo &>/dev/null
+adduser --quiet "${DOCKER_BUILD_USER}" sudo &>/dev/null
 
 CMD=$*
 
-su -l ${DOCKER_BUILD_USER} << EOF
+su -l "${DOCKER_BUILD_USER}" << EOF
 # for makefiles
 export MCPU=1
 export V=0

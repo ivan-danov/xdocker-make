@@ -239,42 +239,24 @@ check:
 	shellcheck ./xdocker-make ./xdocker-create *.bash
 	shellcheck examples/*.conf
 
-precise:
-	./xdocker-create examples/precise-dev.conf
 
-xenial:
-	./xdocker-create examples/xenial-dev.conf
+EXAMPLES=$(subst -dev.conf,,$(notdir $(wildcard examples/*.conf)))
 
-bionic:
-	./xdocker-create examples/bionic-dev.conf
+define examples_template
 
-focal:
-	./xdocker-create examples/focal-dev.conf
+create_$(1):
+	./xdocker-create examples/$(1)-dev.conf
 
-jammy:
-	./xdocker-create examples/jammy-dev.conf
+push_$(1):
+	docker push xdockermake/$(1)-devel:$(shell docker inspect xdockermake/$(1)-devel:latest |grep '"xdockermake/$(1)-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	docker push xdockermake/$(1)-devel:latest
 
-push_precise:
-	docker push xdockermake/precise-devel:$(shell docker inspect xdockermake/precise-devel:latest |grep '"xdockermake/precise-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
-	docker push xdockermake/precise-devel:latest
+create_all: create_$(1)
+push_all: push_$(1)
 
-push_xenial:
-	docker push xdockermake/xenial-devel:$(shell docker inspect xdockermake/xenial-devel:latest |grep '"xdockermake/xenial-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
-	docker push xdockermake/xenial-devel:latest
+.PHONY: create_$(1) push_$(1)
+endef
 
-push_bionic:
-	docker push xdockermake/bionic-devel:$(shell docker inspect xdockermake/bionic-devel:latest |grep '"xdockermake/bionic-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
-	docker push xdockermake/bionic-devel:latest
+$(foreach ex,$(EXAMPLES),$(eval $(call examples_template,$(ex))))
 
-push_focal:
-	docker push xdockermake/focal-devel:$(shell docker inspect xdockermake/focal-devel:latest |grep '"xdockermake/focal-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
-	docker push xdockermake/focal-devel:latest
-
-push_jammy:
-	docker push xdockermake/jammy-devel:$(shell docker inspect xdockermake/jammy-devel:latest |grep '"xdockermake/jammy-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
-	docker push xdockermake/jammy-devel:latest
-
-
-push_all: push_precise push_xenial push_bionic push_focal push_jammy
-
-.PHONY: push_all push_precise push_xenial push_bionic push_focal push_jammy
+.PHONY: create_all push_all
