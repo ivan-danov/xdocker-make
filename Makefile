@@ -251,10 +251,14 @@ push_$(1):
 	docker push xdockermake/$(1)-devel:$(shell docker inspect xdockermake/$(1)-devel:latest |grep '"xdockermake/$(1)-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
 	docker push xdockermake/$(1)-devel:latest
 
+pull_$(1):
+	docker pull xdockermake/$(1)-devel:latest
+
 create_all: create_$(1)
 push_all: push_$(1)
+pull_all: pull_$(1)
 
-.PHONY: create_$(1) push_$(1)
+.PHONY: create_$(1) push_$(1) pull_$(1)
 endef
 
 $(foreach ex,$(EXAMPLES),$(eval $(call examples_template,$(ex))))
