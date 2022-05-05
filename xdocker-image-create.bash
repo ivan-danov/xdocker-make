@@ -50,9 +50,11 @@ if [ "${OLD_RELEASE_REPO}" -eq 1 ]; then
 sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 fi
 
+ln -fs "/usr/share/zoneinfo/${TIMEZONE_PATH}" /etc/localtime
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y install apt-utils vim
+apt-get install -y --no-install-recommends tzdata
 apt-get -y upgrade
 
 # shellcheck disable=SC2086
