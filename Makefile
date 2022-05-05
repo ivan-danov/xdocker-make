@@ -244,23 +244,35 @@ EXAMPLES=$(subst -dev.conf,,$(notdir $(wildcard examples/*.conf)))
 
 define examples_template
 
+.PHONY: create_$(1)
 create_$(1):
 	./xdocker-create examples/$(1)-dev.conf
 
+.PHONY: push_$(1)
 push_$(1):
-	docker push xdockermake/$(1)-devel:$(shell docker inspect xdockermake/$(1)-devel:latest |grep '"xdockermake/$(1)-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
+	echo $(1)
+	docker push xdockermake/$(1)-devel:$$(shell docker inspect xdockermake/$(1)-devel:latest |grep '"xdockermake/$(1)-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
 	docker push xdockermake/$(1)-devel:latest
 
+.PHONY: pull_$(1)
 pull_$(1):
 	docker pull xdockermake/$(1)-devel:latest
 
 create_all: create_$(1)
 push_all: push_$(1)
 pull_all: pull_$(1)
-
-.PHONY: create_$(1) push_$(1) pull_$(1)
 endef
+.PHONY: create_all push_all pull_all
 
 $(foreach ex,$(EXAMPLES),$(eval $(call examples_template,$(ex))))
 
-.PHONY: create_all push_all
+ALL_DOCKER_IMAGES=$(shell docker images --filter=reference='xdockermake/*' --format "table {{.Repository}}:{{.Tag}}"|grep -v REPOSITORY)
+ifneq ($(ALL_DOCKER_IMAGES),)
+remove_all_docker_images:
+	$(Q)echo "remove $(ALL_DOCKER_IMAGES)"
+	$(Q)docker rmi $(ALL_DOCKER_IMAGES)
+else
+remove_all_docker_images:
+	$(Q)echo "nothing to remove"
+endif
+.PHONY: remove_all_docker_images
