@@ -49,7 +49,7 @@ function die() {
 
 
 argc=$#
-if [ ${argc} -lt 3 ]; then
+if [ ${argc} -lt 2 ]; then
 	echo "Usage:"
 	echo "	${0} <docker image> cmd [args]"
 	exit 1
