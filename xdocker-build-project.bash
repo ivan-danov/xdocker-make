@@ -42,9 +42,9 @@ shift 4
 
 chown "${DOCKER_UID}"."${DOCKER_GID}" "/home/${DOCKER_BUILD_USER}"
 
-addgroup --quiet --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}"
+addgroup --quiet --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}" 2>/dev/null || true
 adduser --quiet --home "/home/${DOCKER_BUILD_USER}" --uid "${DOCKER_UID}" \
-  --ingroup "${DOCKER_BUILD_USER}" \
+  --gid "${DOCKER_GID}" \
   --shell /bin/bash --disabled-password --gecos 'compile user' "${DOCKER_BUILD_USER}"
 
 adduser --quiet "${DOCKER_BUILD_USER}" sudo &>/dev/null
