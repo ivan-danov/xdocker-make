@@ -41,7 +41,7 @@ PROJECT_SRC_DOCKER_DIR=$4
 shift 4
 
 if [ "${DOCKER_UID}" != "0" ]; then
-	fiUL=$(id -nu "${DOCKER_UID}" 2>/dev/null || true)
+	UL=$(id -nu "${DOCKER_UID}" 2>/dev/null || true)
 	if [ -n "${UL}" ]; then
 		deluser --remove-home "${UL}" >/dev/null 2>&1 || true
 	fi
