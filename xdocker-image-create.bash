@@ -64,6 +64,7 @@ apt-get -y install ${DEB_PACKAGES}
 echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 
 chmod 755 /xdocker-build-project.bash
+chmod 6755 /usr/bin/sudo
 
 echo "Clean"
 apt-get -qq clean

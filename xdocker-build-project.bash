@@ -40,14 +40,22 @@ DOCKER_GID=$3
 PROJECT_SRC_DOCKER_DIR=$4
 shift 4
 
+if [ "${DOCKER_UID}" != "0" ]; then
+	fiUL=$(id -nu "${DOCKER_UID}" 2>/dev/null || true)
+	if [ -n "${UL}" ]; then
+		deluser --remove-home "${UL}" >/dev/null 2>&1 || true
+	fi
+
+	addgroup --quiet --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}" 2>/dev/null || true
+	adduser --quiet --home "/home/${DOCKER_BUILD_USER}" --uid "${DOCKER_UID}" \
+		--gid "${DOCKER_GID}" \
+		--shell /bin/bash --disabled-password --gecos 'compile user' \
+		"${DOCKER_BUILD_USER}"  2>/dev/null || true
+
+	adduser --quiet "${DOCKER_BUILD_USER}" sudo &>/dev/null
+fi
+
 chown "${DOCKER_UID}"."${DOCKER_GID}" "/home/${DOCKER_BUILD_USER}"
-
-addgroup --quiet --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}" 2>/dev/null || true
-adduser --quiet --home "/home/${DOCKER_BUILD_USER}" --uid "${DOCKER_UID}" \
-  --gid "${DOCKER_GID}" \
-  --shell /bin/bash --disabled-password --gecos 'compile user' "${DOCKER_BUILD_USER}"
-
-adduser --quiet "${DOCKER_BUILD_USER}" sudo &>/dev/null
 
 CMD=$*
 
@@ -65,3 +73,7 @@ echo "Exec '${CMD}' on $(lsb_release -s -d) in ${PROJECT_SRC_DOCKER_DIR}"
 ${CMD}
 echo "Exit from $(lsb_release -s -d) after exec '${CMD}' in ${PROJECT_SRC_DOCKER_DIR}"
 EOF
+
+if [ "${DOCKER_UID}" != "0" ]; then
+	deluser --remove-home "${DOCKER_BUILD_USER}" >/dev/null 2>&1 || true
+fi
