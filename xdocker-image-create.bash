@@ -53,12 +53,20 @@ fi
 ln -fs "/usr/share/zoneinfo/${TIMEZONE_PATH}" /etc/localtime
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get -y install apt-utils vim
+apt-get -y install apt-utils vim lsb-release
 apt-get install -y --no-install-recommends tzdata
 apt-get -y upgrade
 
-# shellcheck disable=SC2086
-apt-get -y install ${DEB_PACKAGES}
+if [ -n "${DEB_PACKAGES0:=}" ]; then
+	# shellcheck disable=SC2086
+	apt-get -y install ${DEB_PACKAGES0}
+	apt-get update
+fi
+
+if [ -n "${DEB_PACKAGES:=}" ]; then
+	# shellcheck disable=SC2086
+	apt-get -y install ${DEB_PACKAGES}
+fi
 
 # sudo without password
 echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
