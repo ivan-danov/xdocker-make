@@ -27,7 +27,7 @@ docker pull xdockermake/${image_name}:latest
 
 ```
 for image_name in $(curl -s -X GET "https://hub.docker.com/v2/repositories/xdockermake/"|jq -r '.results|.[]|.name'); do
-        echo docker pull xdockermake/${image_name}:latest
+        docker pull xdockermake/${image_name}:latest
 done
 ```
 
