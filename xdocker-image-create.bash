@@ -55,17 +55,17 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y install apt-utils vim lsb-release
 apt-get install -y --no-install-recommends tzdata
-apt-get -y upgrade
+apt-get -y upgrade || ${SKIP_ERRORS:=false}
 
 if [ -n "${DEB_PACKAGES0:=}" ]; then
 	# shellcheck disable=SC2086
-	apt-get -y install ${DEB_PACKAGES0}
+	apt-get -y install ${DEB_PACKAGES0} || ${SKIP_ERRORS:=false}
 	apt-get update
 fi
 
 if [ -n "${DEB_PACKAGES:=}" ]; then
 	# shellcheck disable=SC2086
-	apt-get -y install ${DEB_PACKAGES}
+	apt-get -y install ${DEB_PACKAGES} || ${SKIP_ERRORS:=false}
 fi
 
 # sudo without password
