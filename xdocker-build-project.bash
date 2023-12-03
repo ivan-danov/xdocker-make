@@ -42,10 +42,14 @@ shift 4
 
 if [ "${DOCKER_UID}" != "0" ]; then
 	groupadd --non-unique --gid "${DOCKER_GID}" "${DOCKER_BUILD_USER}"
+	SHELL="" # "-s /bin/sh"
+	if [ -x /bin/bash ]; then
+		SHELL="-s /bin/bash"
+	fi
 	useradd --non-unique --uid "${DOCKER_UID}" \
 		--gid "${DOCKER_BUILD_USER}" --groups sudo \
 		--no-create-home --home-dir "/home/${DOCKER_BUILD_USER}" \
-		--comment 'compile user' \
+		${SHELL} --comment 'compile user' \
 		"${DOCKER_BUILD_USER}"
 fi
 
