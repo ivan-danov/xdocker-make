@@ -48,7 +48,7 @@ DEBDESC += "build docker development images"
 
 DEBDIR = $(PROJECT)_deb
 
-PACKAGE_DEPS += , docker.io
+PACKAGE_DEPS += , docker.io,docker-buildx
 
 ifneq ($(V),0)
 Q =
@@ -212,12 +212,14 @@ define deb_func
 	${Q}chmod 0755 $(DEBDIR)/usr/lib/$(DEBNAME)/xdocker-image-create.bash
 
 	${Q}cp -a examples $(DEBDIR)/usr/share/doc/$(DEBNAME)/
+	${Q}rm -f $(DEBDIR)/usr/share/doc/$(DEBNAME)/examples/.gitignore
+	${Q}rm -f $(DEBDIR)/usr/share/doc/$(DEBNAME)/examples/mysql-apt-config_*_all.deb
 
 	$(call deb_control)
 	$(call deb_end)
 	$(Q)rm -r $(DEBDIR)
 	$(Q)ls -la *.deb
-endef #deb_func
+endef # deb_func
 
 deb:
 	$(call deb_func)
