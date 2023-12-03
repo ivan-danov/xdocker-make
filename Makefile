@@ -252,7 +252,7 @@ create_$(1):
 
 .PHONY: push_$(1)
 push_$(1):
-	echo $(1)
+	$(Q)echo $(1)
 	docker push xdockermake/$(1)-devel:$$(shell docker inspect xdockermake/$(1)-devel:latest |grep '"xdockermake/$(1)-devel:'|grep -v latest|cut -d '"' -f 2|cut -d ':' -f 2)
 	docker push xdockermake/$(1)-devel:latest
 
