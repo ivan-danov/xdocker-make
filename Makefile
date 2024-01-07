@@ -48,7 +48,7 @@ DEBDESC += "build docker development images"
 
 DEBDIR = $(PROJECT)_deb
 
-PACKAGE_DEPS += , docker.io,docker-buildx
+PACKAGE_DEPS += ,docker.io,docker-buildx
 
 ifneq ($(V),0)
 Q =

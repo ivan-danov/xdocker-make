@@ -8,3 +8,4 @@ output
 custom_script.log
 tmp.*
 .#tmp.*
+*.xz

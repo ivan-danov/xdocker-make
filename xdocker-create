@@ -72,26 +72,17 @@ fi
 
 CONFIG_FILE=${1}
 
-# shellcheck source=/dev/null
-source "${CONFIG_FILE}"
-
-# check required params and arguments
-ifNotSet OS_DISTRO && die "💥 OS_DISTRO was not defined."
-ifNotSet IMAGE_TYPE && die "💥 IMAGE_TYPE was not defined."
-ifNotSet CONTAINER_NAME && die "💥 CONTAINER_NAME was not defined."
-ifNotSet CONTAINER_VERSION && die "💥 CONTAINER_VERSION was not defined."
-ifNotSet MAINTAINER && die "💥 MAINTAINER was not defined."
-ifNotSet DEB_PACKAGES && die "💥 DEB_PACKAGES was not defined."
-
 function cleanup() {
 	exit_code=$?
 	trap - SIGINT SIGTERM ERR EXIT
 
 	[[ $(type -t xdocker_conf_cleanup) == function ]] && xdocker_conf_cleanup
 
-	if [ -d "${tmpdir}" ]; then
-		rm -rf "$tmpdir"
-		log "🚽 Deleted temporary working directory $tmpdir"
+	if ifIsSet tmpdir; then
+		if [ -d "${tmpdir}" ]; then
+			rm -rf "$tmpdir"
+			log "🚽 Deleted temporary working directory $tmpdir"
+		fi
 	fi
 
 	log "🚽 cleanup"
@@ -103,6 +94,17 @@ function cleanup() {
 trap cleanup SIGINT SIGTERM ERR EXIT
 
 log "👶 Starting up..."
+
+# shellcheck source=/dev/null
+source "${CONFIG_FILE}"
+
+# check required params and arguments
+ifNotSet OS_DISTRO && die "💥 OS_DISTRO was not defined."
+ifNotSet IMAGE_TYPE && die "💥 IMAGE_TYPE was not defined."
+ifNotSet CONTAINER_NAME && die "💥 CONTAINER_NAME was not defined."
+ifNotSet CONTAINER_VERSION && die "💥 CONTAINER_VERSION was not defined."
+ifNotSet MAINTAINER && die "💥 MAINTAINER was not defined."
+ifNotSet DEB_PACKAGES && die "💥 DEB_PACKAGES was not defined."
 
 tmpdir=$(mktemp -d -p ${OUTPUT_DIR})
 if [[ ! "$tmpdir" || ! -d "$tmpdir" ]]; then
@@ -135,7 +137,7 @@ ENV IMAGE_TYPE=${IMAGE_TYPE}
 ENV CONTAINER_NAME=${CONTAINER_NAME}
 ENV CONTAINER_VERSION=${CONTAINER_VERSION}
 ENV DEBIAN_FRONTEND=noninteractive
-ENV OLD_RELEASE_REPO=${OLD_RELEASE_REPO}
+ENV OLD_RELEASE_REPO=${OLD_RELEASE_REPO:=0}
 ENV DEB_PACKAGES="${DEB_PACKAGES:=}"
 ENV DEB_PACKAGES0="${DEB_PACKAGES0:=}"
 ENV TIMEZONE_PATH="${TIMEZONE_PATH}"
