@@ -46,10 +46,11 @@ if [ "${DOCKER_UID}" != "0" ]; then
 	if [ -x /bin/bash ]; then
 		SHELL="-s /bin/bash"
 	fi
+	# shellcheck disable=SC2086
 	useradd --non-unique --uid "${DOCKER_UID}" \
 		--gid "${DOCKER_BUILD_USER}" --groups sudo \
 		--no-create-home --home-dir "/home/${DOCKER_BUILD_USER}" \
-		"${SHELL}" --comment 'compile user' \
+		${SHELL} --comment 'compile user' \
 		"${DOCKER_BUILD_USER}"
 fi
 
