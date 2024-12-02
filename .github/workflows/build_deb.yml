@@ -34,7 +34,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ver=0.0
+        ver=$(make version)
         echo "ver=$ver"
         tag=release-$(make version)-$(date +%Y%m%d-%H%M%S)
         echo "tag=$tag"
