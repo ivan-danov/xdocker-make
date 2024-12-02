@@ -18,7 +18,7 @@ jobs:
       id: create_tag
       run: |
         tag=release-$(make version)-$(date +%Y%m%d-%H%M%S)
-        echo "tag::$tag" >> $GITHUB_OUTPUT
+        echo "tag=$tag" >> $GITHUB_OUTPUT
 
     - name: Create Release
       id: create_release
@@ -55,12 +55,12 @@ jobs:
       id: create_tag
       run: |
         tag=$(make version)
-        echo "::set-output name=tag::$tag"
+        echo "tag=$tag" >> $GITHUB_OUTPUT
     - name: Get deb name
       id: debname
       run: |
         debname=$(make debname)
-        echo "::set-output name=debname::$debname"
+        echo "debname=$debname" >> $GITHUB_OUTPUT
 
     - uses: actions/download-artifact@v4
       with:
@@ -69,7 +69,7 @@ jobs:
       id: upload_info
       run: |
         upload_url=$(cat info/upload_url)
-        echo "::set-output name=upload_url::$upload_url"
+        echo "upload_url=$upload_url" >> $GITHUB_OUTPUT
 
     - name: Install extra packages
       run: |
@@ -108,7 +108,7 @@ jobs:
       id: publish_info
       run: |
         release_id=$(cat info/release_id)
-        echo "::set-output name=release_id::$release_id"
+        echo "release_id=$release_id" >> $GITHUB_OUTPUT
     - uses: eregon/publish-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
