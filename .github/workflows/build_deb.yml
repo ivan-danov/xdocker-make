@@ -18,7 +18,7 @@ jobs:
       id: create_tag
       run: |
         tag=release-$(make version)-$(date +%Y%m%d-%H%M%S)
-        echo "::set-output name=tag::$tag"
+        echo "tag::$tag" >> $GITHUB_OUTPUT
 
     - name: Create Release
       id: create_release
