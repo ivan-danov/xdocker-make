@@ -70,5 +70,5 @@ PROJECT_SRC_DOCKER_DIR=${DOCKER_USER_HOMEDIR}/$(realpath --relative-to="${OS_DOC
 
 docker run --hostname="xdockermake" -it --rm --init \
   --mount type=bind,source="${OS_DOCKER_USER_HOMEDIR}",destination="${DOCKER_USER_HOMEDIR}" \
-  --entrypoint="" "${DOCKER_IMAGE}" \
+  --entrypoint="" ${XDOCKER_MAKE_OPTS:-} "${DOCKER_IMAGE}" \
   /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"

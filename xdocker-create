@@ -129,7 +129,7 @@ cp ${XDOCKER_BUILD_PROJECT} "$tmpdir/xdocker-build-project.bash"
 cat > "$tmpdir/Dockerfile" << EOF
 FROM ${DOCKER_FROM}
 
-MAINTAINER ${MAINTAINER}
+LABEL org.opencontainers.image.authors=${MAINTAINER}
 
 ENV OS_NAME=${OS_NAME}
 ENV OS_DISTRO=${OS_DISTRO}
