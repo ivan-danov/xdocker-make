@@ -46,6 +46,9 @@ function die() {
 	fi
 	exit "$code"
 }
+ifIsSet() {
+	[[ ${!1-x} == x ]] && return 1 || return 0
+}
 
 
 argc=$#
@@ -61,14 +64,21 @@ shift 1
 # mount user home dir in container
 DOCKER_BUILD_USER=$(id -u -n)
 DOCKER_USER_HOMEDIR=/home/${DOCKER_BUILD_USER}
+
+if ifIsSet JENKINS_SRC_DIR; then
+OS_DOCKER_USER_HOMEDIR="${JENKINS_SRC_DIR}"
+DOCKER_RUN_OPTS=
+else
+DOCKER_RUN_OPTS=-it
 if [ -d "${DOCKER_USER_HOMEDIR}" ]; then
 OS_DOCKER_USER_HOMEDIR="${DOCKER_USER_HOMEDIR}"
 else
 OS_DOCKER_USER_HOMEDIR="/Users/${DOCKER_BUILD_USER}"
 fi
+fi
 PROJECT_SRC_DOCKER_DIR=${DOCKER_USER_HOMEDIR}/$(realpath --relative-to="${OS_DOCKER_USER_HOMEDIR}" .)
 
-docker run --hostname="xdockermake" -it --rm --init \
+docker run --hostname="xdockermake" ${DOCKER_RUN_OPTS} --rm --init \
   --mount type=bind,source="${OS_DOCKER_USER_HOMEDIR}",destination="${DOCKER_USER_HOMEDIR}" \
   --entrypoint="" ${XDOCKER_MAKE_OPTS:-} "${DOCKER_IMAGE}" \
   /xdocker-build-project.bash "${DOCKER_BUILD_USER}" "$(id -u)" "$(id -g)" "${PROJECT_SRC_DOCKER_DIR}" "$@"
