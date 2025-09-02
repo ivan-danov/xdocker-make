@@ -59,6 +59,8 @@ chown "${DOCKER_UID}":"${DOCKER_GID}" "/home/${DOCKER_BUILD_USER}"
 
 CMD=$*
 
+TMPTERM=${TERM:-xterm}
+
 su -l "${DOCKER_BUILD_USER}" << EOF
 # for makefiles
 export MCPU=1
@@ -67,6 +69,7 @@ export SHOW_LESS_LINES=yes
 export SHOW_LINKING_LINES=yes
 export ENABLE_DEPENDANCY=yes
 export BEERSYM='🍺 '
+export TERM=${TMPTERM}
 
 cd "${PROJECT_SRC_DOCKER_DIR}"
 echo "Exec '${CMD}' on $(lsb_release -s -d) in ${PROJECT_SRC_DOCKER_DIR}"

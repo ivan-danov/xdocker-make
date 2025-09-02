@@ -278,3 +278,14 @@ remove_all_docker_images:
 	$(Q)echo "nothing to remove"
 endif
 .PHONY: remove_all_docker_images
+
+OLD_DOCKER_IMAGES:=$(shell docker image ls --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}" 'xdockermake/*'|grep -v REPOSITORY|grep -v ':latest'|cut -d ' ' -f 1)
+ifneq ($(OLD_DOCKER_IMAGES),)
+remove_old_docker_images:
+	$(Q)echo "remove $(OLD_DOCKER_IMAGES)"
+	docker rmi $(OLD_DOCKER_IMAGES) || true
+else
+remove_old_docker_images:
+	$(Q)echo "nothing to remove"
+endif
+.PHONY: remove_old_docker_images
