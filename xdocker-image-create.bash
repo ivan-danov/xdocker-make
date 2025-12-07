@@ -65,7 +65,7 @@ if [ -n "${DEB_PACKAGES:=}" ]; then
 fi
 
 # sudo without password
-echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
+echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 chmod 755 /xdocker-build-project.bash
 chmod 6755 /usr/bin/sudo

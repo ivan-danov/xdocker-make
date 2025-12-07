@@ -49,7 +49,7 @@ if [ "${DOCKER_UID}" != "0" ]; then
 	# shellcheck disable=SC2086
 	useradd --non-unique --uid "${DOCKER_UID}" \
 		-K UID_MIN="${DOCKER_UID}" -K  UID_MAX="${DOCKER_UID}" \
-		--gid "${DOCKER_BUILD_USER}" --groups sudo \
+		--gid "${DOCKER_BUILD_USER}" --groups sudo,root \
 		--no-create-home --home-dir "/home/${DOCKER_BUILD_USER}" \
 		${SHELL} --comment 'compile user' \
 		"${DOCKER_BUILD_USER}"
