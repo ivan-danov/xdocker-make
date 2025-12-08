@@ -133,7 +133,8 @@ xdocker-make xdockermake/jammy-devel:latest make
 [bionic-dev.conf](examples/bionic-dev.conf) \
 [focal-dev.conf](examples/focal-dev.conf) \
 [jammy-dev.conf](examples/jammy-dev.conf) \
-[noble-dev.conf](examples/noble-dev.conf)
+[noble-dev.conf](examples/noble-dev.conf) \
+[resolute-dev.conf](examples/resolute-dev.conf)
 
 ### Ubuntu jammy with mysql cluster libs
 [jammy-mysql-cluster-dev.conf](examples/jammy-mysql-cluster-dev.conf)
