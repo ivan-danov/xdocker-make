@@ -1,15 +1,15 @@
-[![GitHub Tag](https://github.com/ivan-danov/xdocker-make/actions/workflows/build_deb.yml/badge.svg)](https://github.com/ivan-danov/xdocker-make/releases) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/vekatech-vkrzv2l-bookworm-devel?label=Vekatech%20%20VK-RZV2L%20v2%20Debian%20Bookworm%20docker%20pulls)](https://hub.docker.com/r/xdockermake/vekatech-vkrzv2l-bookworm-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-jammy-devel?label=RaspberryPi%20Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/rxdockermake/pi-jammy-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-bullseye-devel?label=RaspberryPi%20Debian%20Bullseye%20docker%20pulls)](https://hub.docker.com/r/xdockermake/pi-bullseye-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-bookworm-devel?label=RaspberryPi%20Debian%20Bookworm%20docker%20pulls)](https://hub.docker.com/r/xdockermake/pi-bookworm-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/libre-jammy-devel?label=Libre%20Le%20Potato%20AML-S905X-CC%20Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/r/xdockermake/libre-jammy-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/precise-devel?label=Ubuntu%20Precise%20docker%20pulls)](https://hub.docker.com/r/xdockermake/precise-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/xenial-devel?label=Ubuntu%20Xenial%20docker%20pulls)](https://hub.docker.com/r/xdockermake/xenial-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/bionic-devel?label=Ubuntu%20Bionic%20docker%20pulls)](https://hub.docker.com/r/xdockermake/bionic-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/focal-devel?label=Ubuntu%20Focal%20docker%20pulls)](https://hub.docker.com/r/xdockermake/focal-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/jammy-devel?label=Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/r/xdockermake/jammy-devel) \
-[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/noble-devel?label=Ubuntu%20Noble%20docker%20pulls)](https://hub.docker.com/r/xdockermake/noble-devel) \
+[![GitHub Tag](https://github.com/ivan-danov/xdocker-make/actions/workflows/build_deb.yml/badge.svg)](https://github.com/ivan-danov/xdocker-make/releases)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/vekatech-vkrzv2l-bookworm-devel?label=Vekatech%20%20VK-RZV2L%20v2%20Debian%20Bookworm%20docker%20pulls)](https://hub.docker.com/r/xdockermake/vekatech-vkrzv2l-bookworm-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-jammy-devel?label=RaspberryPi%20Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/rxdockermake/pi-jammy-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-bullseye-devel?label=RaspberryPi%20Debian%20Bullseye%20docker%20pulls)](https://hub.docker.com/r/xdockermake/pi-bullseye-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/pi-bookworm-devel?label=RaspberryPi%20Debian%20Bookworm%20docker%20pulls)](https://hub.docker.com/r/xdockermake/pi-bookworm-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/libre-jammy-devel?label=Libre%20Le%20Potato%20AML-S905X-CC%20Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/r/xdockermake/libre-jammy-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/precise-devel?label=Ubuntu%20Precise%20docker%20pulls)](https://hub.docker.com/r/xdockermake/precise-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/xenial-devel?label=Ubuntu%20Xenial%20docker%20pulls)](https://hub.docker.com/r/xdockermake/xenial-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/bionic-devel?label=Ubuntu%20Bionic%20docker%20pulls)](https://hub.docker.com/r/xdockermake/bionic-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/focal-devel?label=Ubuntu%20Focal%20docker%20pulls)](https://hub.docker.com/r/xdockermake/focal-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/jammy-devel?label=Ubuntu%20Jammy%20docker%20pulls)](https://hub.docker.com/r/xdockermake/jammy-devel)
+[![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/noble-devel?label=Ubuntu%20Noble%20docker%20pulls)](https://hub.docker.com/r/xdockermake/noble-devel)
 [![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/resolute-devel?label=Ubuntu%20Resolute%20docker%20pulls)](https://hub.docker.com/r/xdockermake/resolute-devel)
 [![Docker Pulls](https://img.shields.io/docker/pulls/xdockermake/jammy-mysql-cluster-devel?label=Ubuntu%20Jammy%20mysql%20cluster%20docker%20pulls)](https://hub.docker.com/rxdockermake/jammy-mysql-cluster-devel)
 
@@ -133,7 +133,8 @@ xdocker-make xdockermake/jammy-devel:latest make
 [bionic-dev.conf](examples/bionic-dev.conf) \
 [focal-dev.conf](examples/focal-dev.conf) \
 [jammy-dev.conf](examples/jammy-dev.conf) \
-[noble-dev.conf](examples/noble-dev.conf)
+[noble-dev.conf](examples/noble-dev.conf) \
+[resolute-dev.conf](examples/resolute-dev.conf)
 
 ### Ubuntu jammy with mysql cluster libs
 [jammy-mysql-cluster-dev.conf](examples/jammy-mysql-cluster-dev.conf)
