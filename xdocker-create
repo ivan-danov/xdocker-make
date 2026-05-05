@@ -163,7 +163,7 @@ ENTRYPOINT ["/bin/bash"]
 EOF
 
 log "🔧 Create docker image"
-${SUDO:=} docker build "$tmpdir" --file "$tmpdir/Dockerfile" \
+${SUDO:=} docker build "$tmpdir" ${DOCKER_BUILD_OPTS:-} --file "$tmpdir/Dockerfile" \
 	--tag "${CONTAINER_NAME}:${CONTAINER_TAG}" \
 	--tag "${CONTAINER_NAME}:latest"
 
