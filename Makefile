@@ -279,6 +279,19 @@ remove_all_docker_images:
 endif
 .PHONY: remove_all_docker_images
 
+ifneq ($(ALL_DOCKER_IMAGES),)
+push_local_images:
+	$(Q)$(foreach i,$(ALL_DOCKER_IMAGES),docker push $(i);)
+else
+push_local_images:
+	$(Q)echo "nothing to push"
+endif
+.PHONY: push_local_images
+
+show_local_images:
+	$(Q)docker images --filter=reference='xdockermake/*' --format "table {{.Repository}}:{{.Tag}}"|grep -v REPOSITORY
+.PHONY: show_local_images
+
 OLD_DOCKER_IMAGES:=$(shell docker image ls --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}" 'xdockermake/*'|grep -v REPOSITORY|grep -v ':latest'|cut -d ' ' -f 1)
 ifneq ($(OLD_DOCKER_IMAGES),)
 remove_old_docker_images:
