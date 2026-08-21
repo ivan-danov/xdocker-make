@@ -87,7 +87,8 @@ function cleanup() {
 
 	log "🚽 cleanup"
 	if [ $exit_code -ne 0 ]; then
-		log "💥 Error!"
+		# log "💥 Error!"
+		die "💥 Error!" $exit_code
 	fi
 }
 
@@ -162,8 +163,11 @@ ENTRYPOINT ["/bin/bash"]
 
 EOF
 
-log "🔧 Create docker image"
-${SUDO:=} docker build "$tmpdir" ${DOCKER_BUILD_OPTS:-} --file "$tmpdir/Dockerfile" \
+# cat $tmpdir/Dockerfile
+
+log "🔧 Create docker image from $tmpdir/Dockerfile"
+${SUDO:=} docker buildx build "$tmpdir" ${DOCKER_BUILD_OPTS:-} \
+	--file "$tmpdir/Dockerfile" \
 	--tag "${CONTAINER_NAME}:${CONTAINER_TAG}" \
 	--tag "${CONTAINER_NAME}:latest"
 

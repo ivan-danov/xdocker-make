@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #*******************************************************************************
-#*                                 xdocker-make                                *
+#*                                xdocker example                              *
 #*-----------------------------------------------------------------------------*
 #*                                                                             *
-#* Copyright (c) 2022 Ivan Danov                                               *
+#* Copyright (c) 2026 Ivan Danov                                               *
 #*                                                                             *
 #* MIT License                                                                 *
 #*                                                                             *
@@ -27,54 +27,12 @@
 #* DEALINGS IN THE SOFTWARE.                                                   *
 #*******************************************************************************
 
-set -Eeuo pipefail
+# # install rust in docker image (for user only!)
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+# bash ./rustup-init.sh -y
 
-# shellcheck disable=SC2034
-XDOCKER_MAKE_BASE_VERSION="1.0"
-# shellcheck disable=SC2034
-XDOCKER_MAKE_VERSION=development
-
-echo "IMAGE_TYPE=${IMAGE_TYPE}"
-echo "OS_DISTRO=${OS_DISTRO}"
-echo "CONTAINER_NAME=${CONTAINER_NAME}"
-echo "CONTAINER_VERSION=${CONTAINER_VERSION}"
-
-export TAR_OPTS=${TAR_OPTS:-"-J"}
-export TAR_EXT=${TAR_EXT:-".xz"}
-
-if [ "${OLD_RELEASE_REPO}" -eq 1 ]; then
-sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
-fi
-
-ln -fs "/usr/share/zoneinfo/${TIMEZONE_PATH}" /etc/localtime
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get -y install apt-utils vim lsb-release
-apt-get install -y --no-install-recommends tzdata
-apt-get -y upgrade || ${SKIP_ERRORS:=false}
-
-if [ -n "${DEB_PACKAGES0:=}" ]; then
-	# shellcheck disable=SC2086
-	apt-get -y install ${DEB_PACKAGES0} || ${SKIP_ERRORS:=false}
-	apt-get update
-fi
-
-if [ -n "${DEB_PACKAGES:=}" ]; then
-	# shellcheck disable=SC2086
-	apt-get -y install ${DEB_PACKAGES} || ${SKIP_ERRORS:=false}
-fi
-
-# sudo without password
-echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-chmod 755 /xdocker-build-project.bash
-chmod 6755 /usr/bin/sudo
-
-if [ -f /xdocker-image-install-script.bash ]; then
-	bash /xdocker-image-install-script.bash
-	rm -f /xdocker-image-install-script.bash
-fi
-
-echo "Clean"
-apt-get -qq clean
-rm -rf /var/lib/apt/lists/*
+# install rust in docker image (for all users)
+# sudo apt update
+apt install rustup
+rustup default stable
+cargo install --root /usr/local bindgen-cli
