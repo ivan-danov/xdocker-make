@@ -27,116 +27,27 @@
 #* DEALINGS IN THE SOFTWARE.                                                   *
 #*******************************************************************************
 
-DOCKER_BUILD_OPTS="--platform linux/arm64"
+groupadd "sudo"
 
-# shellcheck disable=SC2034
-OS_NAME="arm64v8/ubuntu"
-OS_DISTRO="resolute"
+# # # install rust in docker image (for user only!)
+# # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-init.sh
+# # bash ./rustup-init.sh -y
+#
+# # install rust in docker image (for all users)
+# # sudo apt update
+# apt install rustup
+# rustup default stable
+# cargo install --root /usr/local bindgen-cli
 
-DOCKER_FROM="${OS_NAME}:${OS_DISTRO}"
-
-DOCKER_REPO="xdockermake"
-
-IMAGE_TYPE=devel # test, release
-# shellcheck disable=SC2034
-CONTAINER_NAME="${DOCKER_REPO}/${OS_DISTRO}-arm64-${IMAGE_TYPE}"
-CONTAINER_VERSION="1.0-$(date +'%Y%m%d-%H%M%S')"
-# shellcheck disable=SC2034
-CONTAINER_TAG="${CONTAINER_VERSION}"
-
-# shellcheck disable=SC2034
-MAINTAINER="XDockerMake"
-
-# shellcheck disable=SC2034
-TIMEZONE_PATH=Europe/Sofia
-
-# use http://old-releases.ubuntu.com/ubuntu/ apt repositories
-# shellcheck disable=SC2034
-OLD_RELEASE_REPO=0
-
-# build
-# shellcheck disable=SC2034
-DEB_PACKAGES="\
-	build-essential \
-	bc \
-	libc6-dev \
-	libcrypt-dev \
-	pkg-config \
-	git \
-	git-extras \
-	wget \
-	lintian \
-	git2cl \
-	lsb-release \
-	binutils-dev \
-	dpkg-dev \
-	graphviz \
-	clang \
-	clangd \
-	clang-format \
-	clang-tidy \
-	clang-tools \
-	cloc \
-	cppcheck \
-	doxygen \
-	make \
-	minify \
-	pkg-config \
-	yui-compressor \
-	lintian \
-	sudo \
-	composer php-gd php-mysql php-pgsql \
-	shfmt \
-	valgrind \
-	pandoc \
-	\
-	binutils-dev \
-	dpkg-dev \
-	freetds-dev \
-	libavcodec-dev \
-	libavdevice-dev \
-	libavfilter-dev \
-	libavformat-dev \
-	libavutil-dev \
-	libcairo2-dev \
-	libcurl4-openssl-dev \
-	libdcmtk-dev \
-	libfcgi-dev \
-	libfreetype6-dev \
-	libgmp-dev \
-	libhpdf-dev \
-	libjansson-dev \
-	libjpeg-dev \
-	libmariadb-dev \
-	libmariadb-dev-compat \
-	libmicrohttpd-dev \
-	libminizip-dev \
-	libpng-dev \
-	libpq-dev \
-	libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev \
-	libssl-dev \
-	libswresample-dev \
-	libswscale-dev \
-	libsystemd-dev \
-	libts-dev \
-	libusb-1.0-0-dev \
-	libx11-dev \
-	libxext-dev \
-	libxi-dev \
-	libxrandr-dev \
-	libxlsxwriter-dev \
-	linux-libc-dev \
-	uuid-dev \
-	zlib1g-dev \
-	libmsgpack-dev \
-	libmxml-dev \
-	"
-
-if [ "$(lsb_release -r -s)" = "26.04" ]; then
-	log "🌎 Install qemu-user-binfmt"
-	sudo apt -qqq -y install qemu-user-binfmt
-else
-	log "🌎 Install qemu-user-static"
-	sudo apt -qq -y install qemu-user-static
-fi
-
+# # Install the Development Tools package group including GNU Compiler Collection (GCC),
+# # GNU Debugger (GDB), and other development tools:
+# dnf group install "Development Tools"
+#
+# # Install the LLVM-based toolchain including the clang compiler and the lld linker:
+# dnf install llvm-toolset
+#
+# # Install the tools for debugging:
+# dnf install gdb valgrind systemtap ltrace strace
+#
+# # Install the dnf-utils package to use the debuginfo-install tool:
+# dnf install dnf-utils

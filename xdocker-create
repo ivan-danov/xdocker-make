@@ -105,7 +105,7 @@ ifNotSet IMAGE_TYPE && die "💥 IMAGE_TYPE was not defined."
 ifNotSet CONTAINER_NAME && die "💥 CONTAINER_NAME was not defined."
 ifNotSet CONTAINER_VERSION && die "💥 CONTAINER_VERSION was not defined."
 ifNotSet MAINTAINER && die "💥 MAINTAINER was not defined."
-ifNotSet DEB_PACKAGES && die "💥 DEB_PACKAGES was not defined."
+ifNotSet DEB_PACKAGES && ifNotSet RPM_PACKAGES && die "💥 DEB_PACKAGES and RPM_PACKAGES was not defined."
 
 tmpdir=$(mktemp -d -p ${OUTPUT_DIR})
 if [[ ! "$tmpdir" || ! -d "$tmpdir" ]]; then
@@ -141,6 +141,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV OLD_RELEASE_REPO=${OLD_RELEASE_REPO:=0}
 ENV DEB_PACKAGES="${DEB_PACKAGES:=}"
 ENV DEB_PACKAGES0="${DEB_PACKAGES0:=}"
+ENV RPM_PACKAGES="${RPM_PACKAGES:=}"
+ENV RPM_PACKAGES0="${RPM_PACKAGES0:=}"
 ENV TIMEZONE_PATH="${TIMEZONE_PATH}"
 ENV SKIP_ERRORS=${SKIP_ERRORS:=false}
 

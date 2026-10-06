@@ -61,7 +61,13 @@ CMD=$*
 
 TMPTERM=${TERM:-xterm}
 
-su -l "${DOCKER_BUILD_USER}" << EOF
+if [ -r /etc/os-release ]; then
+. /etc/os-release
+else
+PRETTY_NAME=$(lsb_release -s -d)
+fi
+
+sudo -s -u "${DOCKER_BUILD_USER}" << EOF
 # for makefiles
 export MCPU=1
 export V=0
@@ -72,7 +78,7 @@ export BEERSYM='🍺 '
 export TERM=${TMPTERM}
 
 cd "${PROJECT_SRC_DOCKER_DIR}"
-echo "Exec '${CMD}' on $(lsb_release -s -d) in ${PROJECT_SRC_DOCKER_DIR}"
+echo "Exec '${CMD}' on ${PRETTY_NAME} in ${PROJECT_SRC_DOCKER_DIR}"
 ${CMD}
-echo "Exit from $(lsb_release -s -d) after exec '${CMD}' in ${PROJECT_SRC_DOCKER_DIR}"
+echo "Exit from ${PRETTY_NAME} after exec '${CMD}' in ${PROJECT_SRC_DOCKER_DIR}"
 EOF

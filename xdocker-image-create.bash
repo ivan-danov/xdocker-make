@@ -4,7 +4,7 @@
 #*                                 xdocker-make                                *
 #*-----------------------------------------------------------------------------*
 #*                                                                             *
-#* Copyright (c) 2022 Ivan Danov                                               *
+#* Copyright (c) 2026 Ivan Danov                                               *
 #*                                                                             *
 #* MIT License                                                                 *
 #*                                                                             *
@@ -42,6 +42,10 @@ echo "CONTAINER_VERSION=${CONTAINER_VERSION}"
 export TAR_OPTS=${TAR_OPTS:-"-J"}
 export TAR_EXT=${TAR_EXT:-".xz"}
 
+if [ -x /usr/bin/apt-get ]; then
+
+echo "Install on Ubuntu/Debian"
+
 if [ "${OLD_RELEASE_REPO}" -eq 1 ]; then
 sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 fi
@@ -78,3 +82,39 @@ fi
 echo "Clean"
 apt-get -qq clean
 rm -rf /var/lib/apt/lists/*
+
+fi # if [ -x /usr/bin/apt-get ]; then
+
+if [ -x /usr/bin/dnf ]; then
+
+echo "Install on Red Hat"
+
+ln -fs "/usr/share/zoneinfo/${TIMEZONE_PATH}" /etc/localtime
+
+dnf check-update || true
+dnf -y install tzdata sudo || true
+dnf -y upgrade
+
+if [ -n "${RPM_PACKAGES0:=}" ]; then
+	# shellcheck disable=SC2086
+	dnf -y install ${RPM_PACKAGES0} || ${SKIP_ERRORS:=false}
+	dnf check-update
+fi
+
+if [ -n "${RPM_PACKAGES:=}" ]; then
+	# shellcheck disable=SC2086
+	dnf -y install ${RPM_PACKAGES} || ${SKIP_ERRORS:=false}
+fi
+
+# sudo without password
+echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+chmod 755 /xdocker-build-project.bash
+chmod 6755 /usr/bin/sudo
+
+if [ -f /xdocker-image-install-script.bash ]; then
+	bash /xdocker-image-install-script.bash
+	rm -f /xdocker-image-install-script.bash
+fi
+
+fi # if [ -x /usr/bin/dnf ]; then
